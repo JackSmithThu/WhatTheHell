@@ -1,16 +1,18 @@
 /**
  * Created by Lenovo on 2017/3/5.
  */
+
 import testreflect.*;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.lang.reflect.Array;
 
-public class TestReflect implements WthInterface  {
-    public void show()
-    {
+public class TestReflect implements WthInterface {
+    public void show() throws Exception {
         //获得对象类型名称
         System.out.println("==========获得对象类型名称==========");
         TestReflectClass trc = new TestReflectClass();
@@ -19,14 +21,11 @@ public class TestReflect implements WthInterface  {
         //实例化类对象的三种方法
         System.out.println("==========实例化类对象的三种方法==========");
         //方法1：这里需要抛出异常，否则会报错
-        try{
-            Class<?> class1 = null;
-            class1 = Class.forName("testreflect.TestReflectClass");
-            System.out.println("类名称   " + class1.getName());
-        }catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+
+        Class<?> class1 = null;
+        class1 = Class.forName("testreflect.TestReflectClass");
+        System.out.println("类名称   " + class1.getName());
+
 
         //方法2
         Class<?> class2 = null;
@@ -42,13 +41,10 @@ public class TestReflect implements WthInterface  {
         //更深入的操作
         System.out.println("=============== clazz ===============");
         Class<?> clazz = null;
-        try{
-            clazz = Class.forName("testreflect.TestReflectClass");
-            System.out.println("类名称   " + clazz.getName());
-        }catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+
+        clazz = Class.forName("testreflect.TestReflectClass");
+        System.out.println("类名称   " + clazz.getName());
+
 
         // 取得父类
         Class<?> parentClass = clazz.getSuperclass();
@@ -135,44 +131,73 @@ public class TestReflect implements WthInterface  {
         }
 
 
+        //构建对象
+        System.out.println("==========构建对象==========");
+        Object obj1 = cons[0].newInstance();
+        System.out.println(obj1);
+        Object obj2 = cons[1].newInstance(3, 4);
+        System.out.println(obj2);
 
-        try{
-            //构建对象
-            System.out.println("==========构建对象==========");
-            Object obj1 =  cons[0].newInstance();
-            System.out.println(obj1);
-            Object obj2 = cons[1].newInstance(3, 4);
-            System.out.println(obj2);
+        //通过反射修改属性
+        System.out.println("==========通过反射修改属性==========");
+        Field ClzAttr1 = clazz.getDeclaredField("attr1");
+        ClzAttr1.setAccessible(true);
+        ClzAttr1.set(obj1, 5);
+        System.out.println("obj1 attr1 = " + ClzAttr1.get(obj1));
 
-            //通过反射修改属性
-            System.out.println("==========通过反射修改属性==========");
-            Field ClzAttr1 = clazz.getDeclaredField("attr1");
-            ClzAttr1.setAccessible(true);
-            ClzAttr1.set(obj1, 5);
-            System.out.println("obj1 attr1 = " + ClzAttr1.get(obj1));
-
-            //通过反射调用方法
-            System.out.println("==========通过反射调用方法==========");
-            Method Clzmethod = clazz.getMethod("show");
-            Clzmethod.invoke(clazz.newInstance());
-            Clzmethod = clazz.getMethod("attrshow", int.class, int.class);
-            Clzmethod.invoke(clazz.newInstance(), 6, 7);
-
-        }catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+        //通过反射调用方法
+        System.out.println("==========通过反射调用方法==========");
+        Method Clzmethod = clazz.getMethod("show");
+        Clzmethod.invoke(clazz.newInstance());
+        Clzmethod = clazz.getMethod("attrshow", int.class, int.class);
+        Clzmethod.invoke(clazz.newInstance(), 6, 7);
 
 
-        try{
         System.out.println("==========通过反射在泛型为Integer的ArrayList中存放一个String类型的对象==========");
         ArrayList<Integer> list = new ArrayList<Integer>();
         Method Arrmethod = list.getClass().getMethod("add", Object.class);
         Arrmethod.invoke(list, "Add String to ArrayList<Integer>");
         System.out.println(list.get(0));
-        }catch (Exception ex)
-        {
-            ex.printStackTrace();
+
+        System.out.println("==========通过反射取得并修改数组的信息==========");
+        int[] temp = {1, 2, 3, 4, 5};
+        Class<?> demo = temp.getClass().getComponentType();
+        System.out.println("数组类型： " + demo.getName());
+        System.out.println("数组长度  " + Array.getLength(temp));
+        System.out.println("数组的第一个元素: " + Array.get(temp, 0));
+        Array.set(temp, 0, 100);
+        System.out.println("修改之后数组第一个元素为： " + Array.get(temp, 0));
+
+        System.out.println("==========通过反射修改数组的大小==========");
+        int[] temp1 = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int[] newTemp = (int[]) arrayInc(temp1, 15);
+        print(newTemp);
+        String[] atr = {"a", "b", "c"};
+        String[] str1 = (String[]) arrayInc(atr, 8);
+        print(str1);
+
+
+    }
+
+    // 修改数组大小
+    public static Object arrayInc(Object obj, int len) {
+        Class<?> arr = obj.getClass().getComponentType();
+        Object newArr = Array.newInstance(arr, len);
+        int co = Array.getLength(obj);
+        System.arraycopy(obj, 0, newArr, 0, co);
+        return newArr;
+    }
+
+    // 打印数组
+    public static void print(Object obj) {
+        Class<?> c = obj.getClass();
+        if (!c.isArray()) {
+            return;
         }
+        System.out.println("数组长度为： " + Array.getLength(obj));
+        for (int i = 0; i < Array.getLength(obj); i++) {
+            System.out.print(Array.get(obj, i) + " ");
+        }
+        System.out.println();
     }
 }
