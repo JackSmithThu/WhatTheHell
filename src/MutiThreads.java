@@ -9,6 +9,7 @@ import java.util.concurrent.FutureTask;
 import mutithreads.*;
 //参考链接
 // http://www.cnblogs.com/wxd0108/p/5479442.html
+//http://www.cnblogs.com/lwbqqyumidi/p/3804883.html
 public class MutiThreads implements WthInterface{
 
     public void show()
