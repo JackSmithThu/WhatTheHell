@@ -32,5 +32,31 @@ public class ThreadsSynchronized implements WthInterface {
         thread2 = new Thread(session);
         thread2.start();
         Thread.currentThread().sleep(100);
+        System.out.println("============重入锁同步===========");
+        ReentrantLockBank rlbank = new ReentrantLockBank();
+        session = new Session(rlbank);
+        thread1 = new Thread(session);
+        thread1.start();
+        thread2 = new Thread(session);
+        thread2.start();
+        Thread.currentThread().sleep(100);
+        System.out.println("============局部变量同步===========");
+        LocalBank lbank = new LocalBank();
+        session = new Session(lbank);
+        thread1 = new Thread(session);
+        thread1.start();
+        thread2 = new Thread(session);
+        thread2.start();
+        Thread.currentThread().sleep(100);
+        System.out.println("============原子变量同步===========");
+        AtomBank abank = new AtomBank();
+        session = new Session(abank);
+        thread1 = new Thread(session);
+        thread1.start();
+        thread2 = new Thread(session);
+        thread2.start();
+        Thread.currentThread().sleep(100);
+
+
     }
 }
