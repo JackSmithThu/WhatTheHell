@@ -2,11 +2,10 @@ import java.lang.reflect.Method;
 
 public class Main {
 
-
     public static void main(String[] args) throws Exception {
 
-        //String ClassName = "MutiThreads";
-        String ClassName = "TestReflect";
+        //String ClassName = "mutithreads.MutiThreads";
+        String ClassName = "testreflect.TestReflect";
         Class<?> aClass = Class.forName(ClassName);
         Object obj = aClass.newInstance();
         Method aMethod = aClass.getMethod("show");

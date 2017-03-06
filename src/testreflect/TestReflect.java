@@ -1,8 +1,9 @@
-/**
+package testreflect; /**
  * Created by Lenovo on 2017/3/5.
  */
 
 import testreflect.*;
+import wthinterface.WthInterface;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

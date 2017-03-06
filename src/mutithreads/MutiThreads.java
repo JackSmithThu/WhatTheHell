@@ -1,22 +1,22 @@
-/**
+package mutithreads; /**
  * Created by Lenovo on 2017/2/26.
  */
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+//import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.Executors;
+//import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
-import mutithreads.*;
+import wthinterface.*;
 //参考链接
 // http://www.cnblogs.com/wxd0108/p/5479442.html
-//http://www.cnblogs.com/lwbqqyumidi/p/3804883.html
-public class MutiThreads implements WthInterface{
+//http://www.cnblogs.com/XHJT/p/3897440.html  7种同步方式
+public class MutiThreads implements WthInterface {
 
     public void show() throws Exception
     {
         //显示主线程名称
         System.out.println("=====================显示主线程名称============================");
-        System.out.println(Thread.currentThread().getName() + " " + "printed by MutiThreads");
+        System.out.println(Thread.currentThread().getName() + " " + "printed by mutithreads.MutiThreads");
 
         //实现Runnable接口的线程调用方式
         System.out.println("=====================实现Runnable接口的线程调用方式============================");
