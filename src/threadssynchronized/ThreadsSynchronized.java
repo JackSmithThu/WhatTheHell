@@ -25,6 +25,7 @@ public class ThreadsSynchronized implements WthInterface {
         thread2.start();
         Thread.currentThread().sleep(100);
         System.out.println("============Volatile变量同步===========");
+        //发薪资时，会计每次都把员工叫来登记他们的银行卡号；一次会计为了省事，没有即时登记，用了以前登记的银行卡号；刚好一个员工的银行卡丢了，已挂失该银行卡号；从而造成该员工领不到工资
         VolatileBank vbank = new VolatileBank();
         session = new Session(vbank);
         thread1 = new Thread(session);

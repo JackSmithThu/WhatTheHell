@@ -6,7 +6,7 @@ public class Main {
 
         //String ClassName = "mutithreads.MutiThreads";
         //String ClassName = "testreflect.TestReflect";
-        String ClassName = "threadssynchronized.ThreadsSynchronized";
+        String ClassName = "Volatile.NonSafeThreadTest";
 
         Class<?> aClass = Class.forName(ClassName);
         Object obj = aClass.newInstance();
